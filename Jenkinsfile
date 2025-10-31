@@ -26,19 +26,18 @@ pipeline {
             sh 'docker rm -f apache1'
             }
         }
+        stage('Create the Apache httpd container') {
+            steps {
+            echo 'Creating the container...'
+            sh 'docker run -dit --name apache1 -p 9000:80  -v /Users/orlando/jenkins/web:/usr/local/apache2/htdocs/ httpd'
+            }
+        }
         stage('Copy the web application to the container directory') {
             steps {
                 echo 'Copying web application...'             
                 sh 'cp -r web/* /Users/orlando/jenkins/web'
             }
         }
-        stage('Create the Apache httpd container') {
-            steps {
-            echo 'Creating the container...'
-            sh 'docker run -dit --name apache1 -p 9000:80  -v /Users/orlando/jenkins/web/usr/local/apache2/htdocs/ httpd'
-            }
-        }
-        
         stage('Checking the app') {
             steps {
                 echo 'Testing the web app'
